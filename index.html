@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bound | Heal, Grow, Love Better</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-top: #14065f;
+        --bg-mid: #1f0a86;
+        --bg-bottom: #090037;
+        --text-primary: #f6f3ff;
+        --text-muted: #d1c8f3;
+        --accent: #ffd85e;
+        --line: rgba(193, 180, 255, 0.25);
+        --glass: rgba(148, 128, 245, 0.16);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Manrope", sans-serif;
+        color: var(--text-primary);
+        min-height: 100vh;
+        background: radial-gradient(circle at 22% 6%, #3f23d3 0, transparent 33%),
+          radial-gradient(circle at 88% 80%, #2c17aa 0, transparent 38%),
+          linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 45%, var(--bg-bottom) 100%);
+        overflow-x: hidden;
+      }
+
+      .ambient {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      .ambient::before,
+      .ambient::after {
+        content: "";
+        position: absolute;
+        width: 48vmax;
+        height: 48vmax;
+        border-radius: 50%;
+        filter: blur(46px);
+        opacity: 0.28;
+        animation: drift 15s ease-in-out infinite alternate;
+      }
+
+      .ambient::before {
+        background: #7a55ff;
+        left: -20vmax;
+        top: -12vmax;
+      }
+
+      .ambient::after {
+        background: #2f91ff;
+        right: -22vmax;
+        bottom: -24vmax;
+        animation-delay: 1.5s;
+      }
+
+      .page {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 24px 28px 56px;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .logo {
+        display: block;
+        width: clamp(84px, 8.5vw, 120px);
+        height: auto;
+      }
+
+      .nav-cta {
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        border-radius: 999px;
+        padding: 12px 20px;
+        color: var(--text-primary);
+        text-decoration: none;
+        font-weight: 600;
+        background: rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(8px);
+        transition: transform 240ms ease, box-shadow 240ms ease;
+      }
+
+      .nav-cta:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+      }
+
+      .hero {
+        min-height: calc(100vh - 110px);
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 34px;
+        align-items: center;
+      }
+
+      .eyebrow {
+        display: inline-block;
+        border: 1px solid var(--line);
+        color: #eee6ff;
+        border-radius: 999px;
+        font-size: 0.88rem;
+        padding: 9px 16px;
+        margin-bottom: 20px;
+        background: rgba(89, 58, 205, 0.25);
+      }
+
+      .award-badge {
+        display: block;
+        width: clamp(68px, 8vw, 100px);
+        height: auto;
+        margin-bottom: 12px;
+      }
+
+      h1 {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(2.4rem, 5.5vw, 5rem);
+        line-height: 1.03;
+        margin: 0 0 16px;
+        letter-spacing: 0.01em;
+      }
+
+      .description {
+        color: var(--text-muted);
+        margin: 0;
+        max-width: 620px;
+        font-size: clamp(0.94rem, 1.15vw, 1.18rem);
+        line-height: 1.55;
+      }
+
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 28px;
+        align-items: center;
+      }
+
+      .qr-card {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        text-decoration: none;
+        padding: 12px 18px 12px 12px;
+        border-radius: 18px;
+        border: 1px solid rgba(198, 184, 255, 0.4);
+        background: linear-gradient(135deg, rgba(102, 73, 220, 0.24), rgba(25, 10, 98, 0.42));
+        backdrop-filter: blur(8px);
+      }
+
+      .qr-image {
+        width: 118px;
+        height: 118px;
+        border-radius: 14px;
+        border: 1px solid rgba(225, 216, 255, 0.5);
+        background: #fff;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+      }
+
+      .qr-image canvas,
+      .qr-image svg {
+        width: 100% !important;
+        height: 100% !important;
+        display: block;
+      }
+
+      .qr-text {
+        text-align: left;
+      }
+
+      .qr-label {
+        margin: 0;
+        font-size: 0.82rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #d6caff;
+      }
+
+      .qr-title {
+        margin: 6px 0 0;
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: #f6f0ff;
+      }
+
+      .store {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        justify-content: flex-start;
+        min-width: 225px;
+        border-radius: 999px;
+        text-decoration: none;
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.42);
+        background: radial-gradient(circle at 50% -30%, rgba(255, 255, 255, 0.25), transparent 55%),
+          linear-gradient(160deg, #0b0b0b 0%, #000 45%, #101010 100%);
+        padding: 10px 12px 10px 10px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 8px 16px rgba(0, 0, 0, 0.35);
+      }
+
+      .store::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+        transform: translateX(-120%);
+        animation: sweep 4.8s ease-in-out infinite;
+      }
+
+      .store-icon {
+        width: 40px;
+        height: 40px;
+        flex: 0 0 auto;
+      }
+
+      .store-text {
+        line-height: 1.05;
+      }
+
+      .store-text small {
+        display: block;
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.94);
+        letter-spacing: 0.01em;
+      }
+
+      .store-text strong {
+        display: block;
+        margin-top: 2px;
+        font-size: 1.58rem;
+        font-weight: 500;
+        letter-spacing: 0.01em;
+      }
+
+      .visual-wrap {
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .device-shell {
+        width: min(280px, 64vw);
+        margin: 0;
+        border-radius: 0;
+        border: 0;
+        background: transparent;
+        padding: 0;
+        box-shadow: none;
+        position: relative;
+        overflow: hidden;
+        animation: floatPhone 6s ease-in-out infinite;
+      }
+
+      .device-shell::before {
+        content: none;
+      }
+
+      .app-shot {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: 0;
+        border: 0;
+        box-shadow: none;
+      }
+
+      .bottom-area {
+        margin-top: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+      }
+
+      .contact-section {
+        text-align: center;
+      }
+
+      .contact-title {
+        margin: 0;
+        font-family: "Playfair Display", serif;
+        font-size: clamp(1.55rem, 2.1vw, 2rem);
+        color: #f4efff;
+      }
+
+      .contact-subtitle {
+        margin: 8px 0 0;
+        color: #cec0f5;
+        font-size: 1rem;
+      }
+
+      .contact-email {
+        display: inline-block;
+        margin-top: 10px;
+        color: #ffffff;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 1.08rem;
+      }
+
+      @keyframes drift {
+        from {
+          transform: translateY(-12px) translateX(0);
+        }
+        to {
+          transform: translateY(12px) translateX(16px);
+        }
+      }
+
+      @keyframes sweep {
+        0%,
+        25% {
+          transform: translateX(-120%);
+        }
+        60%,
+        100% {
+          transform: translateX(120%);
+        }
+      }
+
+      @keyframes floatPhone {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-8px);
+        }
+      }
+
+      @media (max-width: 980px) {
+        .hero {
+          grid-template-columns: 1fr;
+          gap: 28px;
+          text-align: center;
+        }
+
+        .description {
+          margin-inline: auto;
+        }
+
+        .cta-row {
+          justify-content: center;
+        }
+
+        .qr-card {
+          justify-content: center;
+        }
+
+        .qr-text {
+          text-align: left;
+        }
+
+        .visual-wrap {
+          justify-content: center;
+        }
+
+        .qr-title {
+          font-size: 1.15rem;
+        }
+
+      }
+
+      @media (max-width: 520px) {
+        .page {
+          padding: 20px 16px 34px;
+        }
+
+        .nav {
+          justify-content: center;
+        }
+
+        .logo {
+          margin-bottom: 20px;
+          width: 90px;
+        }
+
+        .nav-cta {
+          display: none;
+        }
+
+        .award-badge {
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        .device-shell {
+          border-radius: 0;
+          padding: 0;
+          margin: 12px 0 18px;
+        }
+
+        .app-shot {
+          border-radius: 0;
+        }
+
+        .store {
+          min-width: min(214px, 66vw);
+          margin-left: auto;
+          margin-right: auto;
+          margin-bottom: 12px;
+        }
+
+        .qr-card {
+          width: 94%;
+          justify-content: center;
+          padding: 10px 0px;
+        }
+
+        .qr-image {
+          width: 96px;
+          height: 96px;
+        }
+
+        .qr-title {
+          font-size: 1rem;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="ambient"></div>
+    <main class="page">
+      <nav class="nav">
+        <img class="logo" src="img/logo.png" alt="Bound logo" />
+        <a class="nav-cta" href="https://apps.apple.com/app/id6757321882" target="_blank" rel="noopener noreferrer">Download App</a>
+      </nav>
+
+      <section class="hero">
+        <div>
+          <img class="award-badge" src="img/award.png" alt="Bound award badge" />
+          <span class="eyebrow">Trusted by 15K+ people</span>
+          <h1>Build Better Relationship</h1>
+          <p class="description">
+            Bound helps you strengthen your relationship, process breakups with clarity, and attract healthier love with daily emotional guidance.
+          </p>
+          <div class="cta-row">
+            <a class="store" href="https://apps.apple.com/app/id6757321882" target="_blank" rel="noopener noreferrer" aria-label="Download on the App Store">
+              <svg class="store-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M16.65 12.63c.02 2.51 2.2 3.35 2.23 3.36-.02.06-.35 1.2-1.14 2.37-.69 1.02-1.41 2.04-2.54 2.06-1.11.02-1.47-.66-2.75-.66-1.29 0-1.68.64-2.73.68-1.09.04-1.92-1.1-2.62-2.12-1.43-2.07-2.52-5.85-1.05-8.42.73-1.28 2.03-2.09 3.44-2.11 1.08-.02 2.09.72 2.75.72.66 0 1.89-.89 3.19-.76.54.02 2.07.22 3.05 1.65-.08.05-1.82 1.06-1.83 3.23zm-2.24-6.01c.58-.7.97-1.67.86-2.64-.84.03-1.86.55-2.46 1.25-.54.62-1.01 1.61-.88 2.56.93.07 1.9-.47 2.48-1.17z"/>
+              </svg>
+              <span class="store-text">
+                <small>Download on the</small>
+                <strong>App Store</strong>
+              </span>
+            </a>
+          </div>
+        </div>
+
+        <div class="visual-wrap">
+          <figure class="device-shell" aria-label="Bound app preview">
+            <img class="app-shot" src="img/bound.png" alt="Bound app interface in iPhone frame" />
+          </figure>
+        </div>
+      </section>
+
+      <section class="bottom-area">
+        <a
+          class="qr-card"
+          href="https://apps.apple.com/app/id6757321882"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Open Bound on the App Store"
+        >
+          <div class="qr-image" id="bound-qr" aria-hidden="true"></div>
+          <div class="qr-text">
+            <p class="qr-label">Quick Install</p>
+            <p class="qr-title">Scan to download Bound</p>
+          </div>
+        </a>
+
+        <section class="contact-section" id="contact">
+          <h2 class="contact-title">Contact Us</h2>
+          <p class="contact-subtitle">Need help or have feedback? Reach us anytime.</p>
+          <a class="contact-email" href="mailto:myboundapp@gmail.com">myboundapp@gmail.com</a>
+        </section>
+      </section>
+    </main>
+    <script src="https://unpkg.com/qr-code-styling@1.9.2/lib/qr-code-styling.js"></script>
+    <script>
+      (function () {
+        const qrMount = document.getElementById("bound-qr");
+        if (!qrMount || typeof QRCodeStyling === "undefined") return;
+
+        const qr = new QRCodeStyling({
+          width: 260,
+          height: 260,
+          type: "svg",
+          data: "https://apps.apple.com/app/id6757321882",
+          qrOptions: {
+            errorCorrectionLevel: "Q",
+          },
+          dotsOptions: {
+            type: "rounded",
+            gradient: {
+              type: "linear",
+              rotation: 1.2,
+              colorStops: [
+                { offset: 0, color: "#129CFF" },
+                { offset: 1, color: "#2F2AD8" },
+              ],
+            },
+          },
+          cornersSquareOptions: {
+            type: "extra-rounded",
+            gradient: {
+              type: "linear",
+              rotation: 0.9,
+              colorStops: [
+                { offset: 0, color: "#0D8FFF" },
+                { offset: 1, color: "#1F1BB8" },
+              ],
+            },
+          },
+          cornersDotOptions: {
+            color: "#0B6DFF",
+          },
+          backgroundOptions: {
+            color: "#ffffff",
+          },
+        });
+
+        qr.append(qrMount);
+      })();
+
+    </script>
+  </body>
+</html>
