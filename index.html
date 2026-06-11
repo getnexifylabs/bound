@@ -1,563 +1,1152 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bound | Heal, Grow, Love Better</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      :root {
-        --bg-top: #14065f;
-        --bg-mid: #1f0a86;
-        --bg-bottom: #090037;
-        --text-primary: #f6f3ff;
-        --text-muted: #d1c8f3;
-        --accent: #ffd85e;
-        --line: rgba(193, 180, 255, 0.25);
-        --glass: rgba(148, 128, 245, 0.16);
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bound — Heal, Grow, Love Better</title>
+  <meta name="description"
+    content="Bound helps you understand your attachment style, process breakups, and build healthier relationships with guided tools and AI support." />
+  <link rel="icon" href="img/favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="img/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg-0: #06022a;
+      --bg-1: #12085c;
+      --bg-2: #1a0d7a;
+      --text: #f8f5ff;
+      --muted: #c8bdf5;
+      --muted-2: #9d8ee8;
+      --accent: #ffd85e;
+      --accent-2: #7b5cff;
+      --line: rgba(198, 184, 255, 0.18);
+      --glass: rgba(120, 95, 255, 0.12);
+      --glass-strong: rgba(89, 58, 205, 0.28);
+      --shadow: 0 24px 80px rgba(8, 2, 40, 0.55);
+      --radius: 24px;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Manrope", sans-serif;
+      color: var(--text);
+      background: var(--bg-0);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.35;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    .bg {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(ellipse 80% 50% at 15% -10%, rgba(91, 56, 255, 0.55), transparent 55%),
+        radial-gradient(ellipse 60% 45% at 95% 20%, rgba(47, 145, 255, 0.22), transparent 50%),
+        radial-gradient(ellipse 70% 50% at 50% 100%, rgba(120, 40, 200, 0.35), transparent 55%),
+        linear-gradient(180deg, #0f0648 0%, #090337 45%, #04011f 100%);
+    }
+
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: -1;
+      animation: orbFloat 18s var(--ease) infinite alternate;
+    }
+
+    .orb-1 {
+      width: 42vmax;
+      height: 42vmax;
+      left: -12vmax;
+      top: 8vmax;
+      background: #6b45ff;
+      opacity: 0.35;
+    }
+
+    .orb-2 {
+      width: 36vmax;
+      height: 36vmax;
+      right: -10vmax;
+      top: 30vmax;
+      background: #2f7dff;
+      opacity: 0.22;
+      animation-delay: -6s;
+    }
+
+    .orb-3 {
+      width: 28vmax;
+      height: 28vmax;
+      left: 35%;
+      bottom: -8vmax;
+      background: #b44dff;
+      opacity: 0.18;
+      animation-delay: -12s;
+    }
+
+    @keyframes orbFloat {
+      from {
+        transform: translate(0, 0) scale(1);
       }
 
-      * {
-        box-sizing: border-box;
+      to {
+        transform: translate(30px, -24px) scale(1.08);
+      }
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* NAV */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 18px 0;
+      margin-bottom: 8px;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 18px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(12, 6, 52, 0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+      transition: border-color 0.3s var(--ease), background 0.3s var(--ease);
+    }
+
+    .nav.scrolled .nav-inner {
+      background: rgba(8, 4, 36, 0.88);
+      border-color: rgba(198, 184, 255, 0.28);
+    }
+
+    .logo {
+      height: 36px;
+      width: auto;
+      display: block;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 26px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      color: #1a0a5c;
+      background: linear-gradient(135deg, #ffe07a 0%, #ffd85e 50%, #f5c842 100%);
+      box-shadow: 0 12px 40px rgba(255, 216, 94, 0.35);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 16px 48px rgba(255, 216, 94, 0.45);
+    }
+
+    .btn-ghost {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--line);
+    }
+
+    .btn-store {
+      padding: 12px 20px 12px 14px;
+      color: #fff;
+      background: linear-gradient(160deg, #111 0%, #000 100%);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 10px 30px rgba(0, 0, 0, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-store::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.2) 50%, transparent 60%);
+      transform: translateX(-100%);
+      animation: shimmer 5s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+
+      0%,
+      70% {
+        transform: translateX(-100%);
       }
 
-      body {
-        margin: 0;
-        font-family: "Manrope", sans-serif;
-        color: var(--text-primary);
-        min-height: 100vh;
-        background: radial-gradient(circle at 22% 6%, #3f23d3 0, transparent 33%),
-          radial-gradient(circle at 88% 80%, #2c17aa 0, transparent 38%),
-          linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 45%, var(--bg-bottom) 100%);
-        overflow-x: hidden;
+      100% {
+        transform: translateX(100%);
+      }
+    }
+
+    .btn-store svg {
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+    }
+
+    .btn-store span {
+      text-align: left;
+      line-height: 1.1;
+    }
+
+    .btn-store small {
+      display: block;
+      font-size: 0.72rem;
+      opacity: 0.9;
+      font-weight: 500;
+    }
+
+    .btn-store strong {
+      display: block;
+      font-size: 1.15rem;
+      font-weight: 600;
+    }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text);
+      padding: 8px;
+      cursor: pointer;
+    }
+
+    /* REVEAL */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 {
+      transition-delay: 0.1s;
+    }
+
+    .reveal-delay-2 {
+      transition-delay: 0.2s;
+    }
+
+    .reveal-delay-3 {
+      transition-delay: 0.3s;
+    }
+
+    /* HERO */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+      min-height: calc(100vh - 100px);
+      padding: 40px 0 80px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--glass-strong);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #ebe4ff;
+      margin-bottom: 20px;
+    }
+
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 12px #4ade80;
+      animation: pulse 2s ease infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
       }
 
-      .ambient {
-        position: fixed;
-        inset: 0;
-        pointer-events: none;
-        z-index: -1;
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+    .award {
+      width: 72px;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    h1 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2.6rem, 5.8vw, 4.5rem);
+      line-height: 1.05;
+      margin: 0 0 20px;
+      letter-spacing: -0.02em;
+    }
+
+    h1 em {
+      font-style: italic;
+      background: linear-gradient(135deg, #fff 0%, #d4c4ff 50%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-lead {
+      font-size: clamp(1rem, 1.4vw, 1.2rem);
+      line-height: 1.65;
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 0 32px;
+    }
+
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .hero-visual {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .phone-glow {
+      position: absolute;
+      width: 70%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(123, 92, 255, 0.5) 0%, transparent 70%);
+      filter: blur(40px);
+      animation: glowPulse 4s ease-in-out infinite;
+    }
+
+    @keyframes glowPulse {
+
+      0%,
+      100% {
+        opacity: 0.6;
+        transform: scale(1);
       }
 
-      .ambient::before,
-      .ambient::after {
-        content: "";
-        position: absolute;
-        width: 48vmax;
-        height: 48vmax;
-        border-radius: 50%;
-        filter: blur(46px);
-        opacity: 0.28;
-        animation: drift 15s ease-in-out infinite alternate;
+      50% {
+        opacity: 1;
+        transform: scale(1.05);
+      }
+    }
+
+    .phone-wrap {
+      position: relative;
+      animation: phoneFloat 5s ease-in-out infinite;
+    }
+
+    @keyframes phoneFloat {
+
+      0%,
+      100% {
+        transform: translateY(0) rotate(-1deg);
       }
 
-      .ambient::before {
-        background: #7a55ff;
-        left: -20vmax;
-        top: -12vmax;
+      50% {
+        transform: translateY(-14px) rotate(1deg);
+      }
+    }
+
+    .phone-wrap img {
+      width: min(300px, 78vw);
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 40px 80px rgba(0, 0, 0, 0.5));
+    }
+
+    /* MARQUEE */
+    .marquee-wrap {
+      overflow: hidden;
+      padding: 28px 0;
+      border-block: 1px solid var(--line);
+      margin-bottom: 100px;
+      mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    }
+
+    .marquee {
+      display: flex;
+      gap: 48px;
+      width: max-content;
+      animation: marquee 35s linear infinite;
+    }
+
+    @keyframes marquee {
+      from {
+        transform: translateX(0);
       }
 
-      .ambient::after {
-        background: #2f91ff;
-        right: -22vmax;
-        bottom: -24vmax;
-        animation-delay: 1.5s;
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    .marquee span {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--muted-2);
+      white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .marquee span::before {
+      content: "✦ ";
+      color: var(--accent);
+    }
+
+    /* SECTION */
+    section {
+      padding: 100px 0;
+    }
+
+    .section-label {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    h2.section-title {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin: 0 0 16px;
+      line-height: 1.15;
+    }
+
+    .section-desc {
+      color: var(--muted);
+      font-size: 1.1rem;
+      max-width: 560px;
+      margin: 0 0 48px;
+      line-height: 1.6;
+    }
+
+    /* STATS */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 100px;
+    }
+
+    .stat-card {
+      padding: 28px 24px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: var(--glass);
+      backdrop-filter: blur(12px);
+      text-align: center;
+      transition: transform 0.3s var(--ease), border-color 0.3s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(198, 184, 255, 0.35);
+    }
+
+    .stat-num {
+      font-family: "Playfair Display", serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 0.95rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    /* BENTO */
+    .bento {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+    }
+
+    .bento-card {
+      padding: 28px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, rgba(100, 70, 220, 0.15) 0%, rgba(20, 10, 80, 0.4) 100%);
+      backdrop-filter: blur(12px);
+      transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bento-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.08), transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+
+    .bento-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow);
+    }
+
+    .bento-card:hover::before {
+      opacity: 1;
+    }
+
+    .bento-card.span-7 {
+      grid-column: span 7;
+    }
+
+    .bento-card.span-5 {
+      grid-column: span 5;
+    }
+
+    .bento-card.span-4 {
+      grid-column: span 4;
+    }
+
+    .bento-card.span-8 {
+      grid-column: span 8;
+    }
+
+    .bento-icon {
+      font-size: 2rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .bento-card h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 0 0 10px;
+    }
+
+    .bento-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.55;
+    }
+
+    /* STEPS */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .step {
+      padding: 32px 28px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: rgba(15, 8, 70, 0.5);
+      position: relative;
+    }
+
+    .step-num {
+      font-family: "Playfair Display", serif;
+      font-size: 3rem;
+      font-weight: 700;
+      color: rgba(255, 216, 94, 0.25);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+
+    .step h3 {
+      margin: 0 0 10px;
+      font-size: 1.15rem;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+
+    /* QUOTES */
+    .quotes {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .quote-card {
+      padding: 28px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: var(--glass);
+    }
+
+    .quote-stars {
+      color: var(--accent);
+      margin-bottom: 12px;
+      letter-spacing: 2px;
+    }
+
+    .quote-text {
+      font-size: 0.98rem;
+      line-height: 1.6;
+      color: #ebe6ff;
+      margin: 0 0 16px;
+      font-style: italic;
+    }
+
+    .quote-author {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--muted-2);
+    }
+
+    /* CTA */
+    .cta-block {
+      text-align: center;
+      padding: 72px 40px;
+      border-radius: 32px;
+      border: 1px solid var(--line);
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(123, 92, 255, 0.35), transparent),
+        linear-gradient(180deg, rgba(30, 15, 100, 0.6) 0%, rgba(10, 5, 40, 0.8) 100%);
+      margin-bottom: 80px;
+    }
+
+    .cta-block h2 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      margin: 0 0 12px;
+    }
+
+    .cta-block p {
+      color: var(--muted);
+      margin: 0 0 32px;
+      font-size: 1.1rem;
+    }
+
+    .qr-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 20px;
+      padding: 16px 24px 16px 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(198, 184, 255, 0.35);
+      background: rgba(0, 0, 0, 0.25);
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.3s var(--ease), border-color 0.3s;
+    }
+
+    .qr-row:hover {
+      transform: scale(1.02);
+      border-color: rgba(255, 216, 94, 0.4);
+    }
+
+    #bound-qr {
+      width: 100px;
+      height: 100px;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #fff;
+      flex-shrink: 0;
+    }
+
+    #bound-qr canvas,
+    #bound-qr svg {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .qr-copy {
+      text-align: left;
+    }
+
+    .qr-copy small {
+      display: block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted-2);
+    }
+
+    .qr-copy strong {
+      display: block;
+      font-size: 1.2rem;
+      margin-top: 4px;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 48px 0 40px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--text);
+    }
+
+    .footer-copy {
+      font-size: 0.85rem;
+      color: var(--muted-2);
+      margin: 0;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        min-height: auto;
+        padding-bottom: 60px;
       }
 
-      .page {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 24px 28px 56px;
-        min-height: 100vh;
+      .hero-lead {
+        margin-inline: auto;
+      }
+
+      .hero-cta {
+        justify-content: center;
+      }
+
+      .award {
+        margin-inline: auto;
+      }
+
+      .bento-card.span-7,
+      .bento-card.span-5,
+      .bento-card.span-4,
+      .bento-card.span-8 {
+        grid-column: span 12;
+      }
+
+      .stats,
+      .steps,
+      .quotes {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .nav-links.open {
         display: flex;
         flex-direction: column;
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 24px;
+        right: 24px;
+        padding: 20px;
+        border-radius: 20px;
+        background: rgba(8, 4, 36, 0.95);
+        border: 1px solid var(--line);
       }
 
       .nav {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-      }
-
-      .logo {
-        display: block;
-        width: clamp(84px, 8.5vw, 120px);
-        height: auto;
-      }
-
-      .nav-cta {
-        border: 1px solid rgba(255, 255, 255, 0.35);
-        border-radius: 999px;
-        padding: 12px 20px;
-        color: var(--text-primary);
-        text-decoration: none;
-        font-weight: 600;
-        background: rgba(0, 0, 0, 0.2);
-        backdrop-filter: blur(8px);
-        transition: transform 240ms ease, box-shadow 240ms ease;
-      }
-
-      .nav-cta:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
-      }
-
-      .hero {
-        min-height: calc(100vh - 110px);
-        display: grid;
-        grid-template-columns: 1.05fr 0.95fr;
-        gap: 34px;
-        align-items: center;
-      }
-
-      .eyebrow {
-        display: inline-block;
-        border: 1px solid var(--line);
-        color: #eee6ff;
-        border-radius: 999px;
-        font-size: 0.88rem;
-        padding: 9px 16px;
-        margin-bottom: 20px;
-        background: rgba(89, 58, 205, 0.25);
-      }
-
-      .award-badge {
-        display: block;
-        width: clamp(68px, 8vw, 100px);
-        height: auto;
-        margin-bottom: 12px;
-      }
-
-      h1 {
-        font-family: "Playfair Display", serif;
-        font-size: clamp(2.4rem, 5.5vw, 5rem);
-        line-height: 1.03;
-        margin: 0 0 16px;
-        letter-spacing: 0.01em;
-      }
-
-      .description {
-        color: var(--text-muted);
-        margin: 0;
-        max-width: 620px;
-        font-size: clamp(0.94rem, 1.15vw, 1.18rem);
-        line-height: 1.55;
-      }
-
-      .cta-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        margin-top: 28px;
-        align-items: center;
-      }
-
-      .qr-card {
-        display: inline-flex;
-        align-items: center;
-        gap: 14px;
-        text-decoration: none;
-        padding: 12px 18px 12px 12px;
-        border-radius: 18px;
-        border: 1px solid rgba(198, 184, 255, 0.4);
-        background: linear-gradient(135deg, rgba(102, 73, 220, 0.24), rgba(25, 10, 98, 0.42));
-        backdrop-filter: blur(8px);
-      }
-
-      .qr-image {
-        width: 118px;
-        height: 118px;
-        border-radius: 14px;
-        border: 1px solid rgba(225, 216, 255, 0.5);
-        background: #fff;
-        display: grid;
-        place-items: center;
-        overflow: hidden;
-      }
-
-      .qr-image canvas,
-      .qr-image svg {
-        width: 100% !important;
-        height: 100% !important;
-        display: block;
-      }
-
-      .qr-text {
-        text-align: left;
-      }
-
-      .qr-label {
-        margin: 0;
-        font-size: 0.82rem;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        color: #d6caff;
-      }
-
-      .qr-title {
-        margin: 6px 0 0;
-        font-size: 1.35rem;
-        font-weight: 700;
-        color: #f6f0ff;
-      }
-
-      .store {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        justify-content: flex-start;
-        min-width: 225px;
-        border-radius: 999px;
-        text-decoration: none;
-        color: #fff;
-        border: 1px solid rgba(255, 255, 255, 0.42);
-        background: radial-gradient(circle at 50% -30%, rgba(255, 255, 255, 0.25), transparent 55%),
-          linear-gradient(160deg, #0b0b0b 0%, #000 45%, #101010 100%);
-        padding: 10px 12px 10px 10px;
         position: relative;
-        overflow: hidden;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 8px 16px rgba(0, 0, 0, 0.35);
       }
 
-      .store::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
-        transform: translateX(-120%);
-        animation: sweep 4.8s ease-in-out infinite;
-      }
-
-      .store-icon {
-        width: 40px;
-        height: 40px;
-        flex: 0 0 auto;
-      }
-
-      .store-text {
-        line-height: 1.05;
-      }
-
-      .store-text small {
+      .nav-toggle {
         display: block;
-        font-size: 0.8rem;
-        color: rgba(255, 255, 255, 0.94);
-        letter-spacing: 0.01em;
       }
 
-      .store-text strong {
-        display: block;
-        margin-top: 2px;
-        font-size: 1.58rem;
-        font-weight: 500;
-        letter-spacing: 0.01em;
+      section {
+        padding: 72px 0;
       }
 
-      .visual-wrap {
-        display: flex;
-        justify-content: flex-end;
+      .cta-block {
+        padding: 48px 24px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
       }
 
-      .device-shell {
-        width: min(280px, 64vw);
-        margin: 0;
-        border-radius: 0;
-        border: 0;
-        background: transparent;
-        padding: 0;
-        box-shadow: none;
-        position: relative;
-        overflow: hidden;
-        animation: floatPhone 6s ease-in-out infinite;
+      .reveal {
+        opacity: 1;
+        transform: none;
       }
+    }
+  </style>
+</head>
 
-      .device-shell::before {
-        content: none;
-      }
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="orb orb-1" aria-hidden="true"></div>
+  <div class="orb orb-2" aria-hidden="true"></div>
+  <div class="orb orb-3" aria-hidden="true"></div>
 
-      .app-shot {
-        display: block;
-        width: 100%;
-        height: auto;
-        border-radius: 0;
-        border: 0;
-        box-shadow: none;
-      }
+  <div class="wrap">
+    <header class="nav" id="nav">
+      <div class="nav-inner">
+        <a href="/"><img class="logo" src="img/logo.png" alt="Bound" /></a>
+        <nav class="nav-links" id="navLinks">
+          <a href="#features">Features</a>
+          <a href="#how">How it works</a>
+          <a href="#reviews">Reviews</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <a class="btn btn-primary" href="https://apps.apple.com/app/id6757321882" target="_blank" rel="noopener">Get the
+          app</a>
+        <button class="nav-toggle" id="navToggle" aria-label="Menu">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 7h16M4 12h16M4 17h16" />
+          </svg>
+        </button>
+      </div>
+    </header>
 
-      .bottom-area {
-        margin-top: 30px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 30px;
-      }
-
-      .contact-section {
-        text-align: center;
-      }
-
-      .contact-title {
-        margin: 0;
-        font-family: "Playfair Display", serif;
-        font-size: clamp(1.55rem, 2.1vw, 2rem);
-        color: #f4efff;
-      }
-
-      .contact-subtitle {
-        margin: 8px 0 0;
-        color: #cec0f5;
-        font-size: 1rem;
-      }
-
-      .contact-email {
-        display: inline-block;
-        margin-top: 10px;
-        color: #ffffff;
-        text-decoration: none;
-        font-weight: 700;
-        font-size: 1.08rem;
-      }
-
-      @keyframes drift {
-        from {
-          transform: translateY(-12px) translateX(0);
-        }
-        to {
-          transform: translateY(12px) translateX(16px);
-        }
-      }
-
-      @keyframes sweep {
-        0%,
-        25% {
-          transform: translateX(-120%);
-        }
-        60%,
-        100% {
-          transform: translateX(120%);
-        }
-      }
-
-      @keyframes floatPhone {
-        0%,
-        100% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(-8px);
-        }
-      }
-
-      @media (max-width: 980px) {
-        .hero {
-          grid-template-columns: 1fr;
-          gap: 28px;
-          text-align: center;
-        }
-
-        .description {
-          margin-inline: auto;
-        }
-
-        .cta-row {
-          justify-content: center;
-        }
-
-        .qr-card {
-          justify-content: center;
-        }
-
-        .qr-text {
-          text-align: left;
-        }
-
-        .visual-wrap {
-          justify-content: center;
-        }
-
-        .qr-title {
-          font-size: 1.15rem;
-        }
-
-      }
-
-      @media (max-width: 520px) {
-        .page {
-          padding: 20px 16px 34px;
-        }
-
-        .nav {
-          justify-content: center;
-        }
-
-        .logo {
-          margin-bottom: 20px;
-          width: 90px;
-        }
-
-        .nav-cta {
-          display: none;
-        }
-
-        .award-badge {
-          margin-left: auto;
-          margin-right: auto;
-        }
-
-        .device-shell {
-          border-radius: 0;
-          padding: 0;
-          margin: 12px 0 18px;
-        }
-
-        .app-shot {
-          border-radius: 0;
-        }
-
-        .store {
-          min-width: min(214px, 66vw);
-          margin-left: auto;
-          margin-right: auto;
-          margin-bottom: 12px;
-        }
-
-        .qr-card {
-          width: 94%;
-          justify-content: center;
-          padding: 10px 0px;
-        }
-
-        .qr-image {
-          width: 96px;
-          height: 96px;
-        }
-
-        .qr-title {
-          font-size: 1rem;
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        *,
-        *::before,
-        *::after {
-          animation: none !important;
-          transition: none !important;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="ambient"></div>
-    <main class="page">
-      <nav class="nav">
-        <img class="logo" src="img/logo.png" alt="Bound logo" />
-        <a class="nav-cta" href="https://apps.apple.com/app/id6757321882" target="_blank" rel="noopener noreferrer">Download App</a>
-      </nav>
-
-      <section class="hero">
-        <div>
-          <img class="award-badge" src="img/award.png" alt="Bound award badge" />
-          <span class="eyebrow">Trusted by 15K+ people</span>
-          <h1>Build Better Relationships</h1>
-          <p class="description">
-            Bound helps you strengthen your relationship, process breakups with clarity, and attract healthier love with daily emotional guidance.
+    <section class="hero">
+      <div>
+        <div class="reveal">
+          <img class="award" src="img/award.png" alt="Award" />
+          <div class="pill"><span class="pill-dot"></span> Trusted by 15K+ people</div>
+          <h1>Understand your patterns.<br /><em>Love with clarity.</em></h1>
+          <p class="hero-lead">
+            Bound is your relationship companion — attachment insights, guided journaling, panic rescue tools, and AI
+            support when emotions run high.
           </p>
-          <div class="cta-row">
-            <a class="store" href="https://apps.apple.com/app/id6757321882" target="_blank" rel="noopener noreferrer" aria-label="Download on the App Store">
-              <svg class="store-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M16.65 12.63c.02 2.51 2.2 3.35 2.23 3.36-.02.06-.35 1.2-1.14 2.37-.69 1.02-1.41 2.04-2.54 2.06-1.11.02-1.47-.66-2.75-.66-1.29 0-1.68.64-2.73.68-1.09.04-1.92-1.1-2.62-2.12-1.43-2.07-2.52-5.85-1.05-8.42.73-1.28 2.03-2.09 3.44-2.11 1.08-.02 2.09.72 2.75.72.66 0 1.89-.89 3.19-.76.54.02 2.07.22 3.05 1.65-.08.05-1.82 1.06-1.83 3.23zm-2.24-6.01c.58-.7.97-1.67.86-2.64-.84.03-1.86.55-2.46 1.25-.54.62-1.01 1.61-.88 2.56.93.07 1.9-.47 2.48-1.17z"/>
+          <div class="hero-cta">
+            <a class="btn btn-store" href="https://apps.apple.com/app/id6757321882" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M16.65 12.63c.02 2.51 2.2 3.35 2.23 3.36-.02.06-.35 1.2-1.14 2.37-.69 1.02-1.41 2.04-2.54 2.06-1.11.02-1.47-.66-2.75-.66-1.29 0-1.68.64-2.73.68-1.09.04-1.92-1.1-2.62-2.12-1.43-2.07-2.52-5.85-1.05-8.42.73-1.28 2.03-2.09 3.44-2.11 1.08-.02 2.09.72 2.75.72.66 0 1.89-.89 3.19-.76.54.02 2.07.22 3.05 1.65-.08.05-1.82 1.06-1.83 3.23zm-2.24-6.01c.58-.7.97-1.67.86-2.64-.84.03-1.86.55-2.46 1.25-.54.62-1.01 1.61-.88 2.56.93.07 1.9-.47 2.48-1.17z" />
               </svg>
-              <span class="store-text">
-                <small>Download on the</small>
-                <strong>App Store</strong>
-              </span>
+              <span><small>Download on the</small><strong>App Store</strong></span>
             </a>
           </div>
         </div>
-
-        <div class="visual-wrap">
-          <figure class="device-shell" aria-label="Bound app preview">
-            <img class="app-shot" src="img/bound.png" alt="Bound app interface in iPhone frame" />
-          </figure>
+      </div>
+      <div class="hero-visual reveal reveal-delay-2">
+        <div class="phone-glow" aria-hidden="true"></div>
+        <div class="phone-wrap">
+          <img src="img/bound.png" alt="Bound app on iPhone" />
         </div>
-      </section>
+      </div>
+    </section>
+  </div>
 
-      <section class="bottom-area">
-        <a
-          class="qr-card"
-          href="https://apps.apple.com/app/id6757321882"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Open Bound on the App Store"
-        >
-          <div class="qr-image" id="bound-qr" aria-hidden="true"></div>
-          <div class="qr-text">
-            <p class="qr-label">Quick Install</p>
-            <p class="qr-title">Scan to download Bound</p>
-          </div>
-        </a>
+  <div class="marquee-wrap" aria-hidden="true">
+    <div class="marquee">
+      <span>Attachment style</span><span>Journaling</span><span>Panic rescue</span><span>AI guidance</span><span>Closure
+        letters</span><span>Mood check-ins</span><span>Boundaries</span><span>7-day program</span>
+      <span>Attachment style</span><span>Journaling</span><span>Panic rescue</span><span>AI guidance</span><span>Closure
+        letters</span><span>Mood check-ins</span><span>Boundaries</span><span>7-day program</span>
+    </div>
+  </div>
 
-        <section class="contact-section" id="contact">
-          <h2 class="contact-title">Contact Us</h2>
-          <p class="contact-subtitle">Need help or have feedback? Reach us anytime.</p>
-          <a class="contact-email" href="mailto:myboundapp@gmail.com">myboundapp@gmail.com</a>
-        </section>
-      </section>
-    </main>
-    <script src="https://unpkg.com/qr-code-styling@1.9.2/lib/qr-code-styling.js"></script>
-    <script>
-      (function () {
-        const qrMount = document.getElementById("bound-qr");
-        if (!qrMount || typeof QRCodeStyling === "undefined") return;
+  <div class="wrap">
+    <div class="stats reveal">
+      <div class="stat-card"><span class="stat-num" data-count="15">0</span><span class="stat-label">K+ active
+          users</span></div>
+      <div class="stat-card"><span class="stat-num" data-count="4.8">0</span><span class="stat-label">App Store
+          rating</span></div>
+      <div class="stat-card"><span class="stat-num">24/7</span><span class="stat-label">Support when you need it</span>
+      </div>
+    </div>
 
-        const qr = new QRCodeStyling({
-          width: 260,
-          height: 260,
-          type: "svg",
-          data: "https://apps.apple.com/app/id6757321882",
-          qrOptions: {
-            errorCorrectionLevel: "Q",
-          },
-          dotsOptions: {
-            type: "rounded",
-            gradient: {
-              type: "linear",
-              rotation: 1.2,
-              colorStops: [
-                { offset: 0, color: "#129CFF" },
-                { offset: 1, color: "#2F2AD8" },
-              ],
-            },
-          },
-          cornersSquareOptions: {
-            type: "extra-rounded",
-            gradient: {
-              type: "linear",
-              rotation: 0.9,
-              colorStops: [
-                { offset: 0, color: "#0D8FFF" },
-                { offset: 1, color: "#1F1BB8" },
-              ],
-            },
-          },
-          cornersDotOptions: {
-            color: "#0B6DFF",
-          },
-          backgroundOptions: {
-            color: "#ffffff",
-          },
-        });
+    <section id="features">
+      <span class="section-label reveal">Features</span>
+      <h2 class="section-title reveal">Everything you need to heal and grow</h2>
+      <p class="section-desc reveal">Whether you're moving on, improving your relationship, or attracting healthier love
+        — Bound meets you where you are.</p>
 
-        qr.append(qrMount);
-      })();
+      <div class="bento">
+        <article class="bento-card span-7 reveal">
+          <span class="bento-icon">🧠</span>
+          <h3>Attachment style insights</h3>
+          <p>Discover your attachment patterns and get a personalized plan based on your goals — move on, improve your
+            relationship, or attract better.</p>
+        </article>
+        <article class="bento-card span-5 reveal reveal-delay-1">
+          <span class="bento-icon">📓</span>
+          <h3>Guided journaling</h3>
+          <p>Relationship diary, closure letters, and daily prompts to process emotions with structure.</p>
+        </article>
+        <article class="bento-card span-4 reveal">
+          <span class="bento-icon">🆘</span>
+          <h3>Panic rescue</h3>
+          <p>Stop the spiral before you text at 2am. Breathe, ground, and get AI support in the moment.</p>
+        </article>
+        <article class="bento-card span-4 reveal reveal-delay-1">
+          <span class="bento-icon">💬</span>
+          <h3>AI relationship coach</h3>
+          <p>Talk through feelings, analyze texts, and get clarity without judgment.</p>
+        </article>
+        <article class="bento-card span-4 reveal reveal-delay-2">
+          <span class="bento-icon">🛡️</span>
+          <h3>Boundaries & affirmations</h3>
+          <p>Build self-respect with boundaries tools and daily affirmations that stick.</p>
+        </article>
+      </div>
+    </section>
 
-    </script>
-  </body>
+    <section id="how">
+      <span class="section-label reveal">How it works</span>
+      <h2 class="section-title reveal">Your path forward in 3 steps</h2>
+      <p class="section-desc reveal">A personalized journey — not generic advice.</p>
+      <div class="steps">
+        <div class="step reveal">
+          <div class="step-num">01</div>
+          <h3>Take the assessment</h3>
+          <p>Answer guided questions about your patterns, goals, and relationship history.</p>
+        </div>
+        <div class="step reveal reveal-delay-1">
+          <div class="step-num">02</div>
+          <h3>Get your custom plan</h3>
+          <p>Receive a tailored roadmap with mini-lessons, tools, and daily practices.</p>
+        </div>
+        <div class="step reveal reveal-delay-2">
+          <div class="step-num">03</div>
+          <h3>Grow every day</h3>
+          <p>Journal, check in, and use rescue tools whenever emotions hit hard.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="reviews">
+      <span class="section-label reveal">Reviews</span>
+      <h2 class="section-title reveal">Loved by thousands</h2>
+      <div class="quotes">
+        <blockquote class="quote-card reveal">
+          <div class="quote-stars">★★★★★</div>
+          <p class="quote-text">"Finally understood why I keep attracting the same type. The attachment analysis changed
+            everything."</p>
+          <cite class="quote-author">— Natalie M.</cite>
+        </blockquote>
+        <blockquote class="quote-card reveal reveal-delay-1">
+          <div class="quote-stars">★★★★★</div>
+          <p class="quote-text">"The text analyzer saved me from so many 2am mistakes. I process feelings instead of
+            reacting."</p>
+          <cite class="quote-author">— Saaniya S.</cite>
+        </blockquote>
+        <blockquote class="quote-card reveal reveal-delay-2">
+          <div class="quote-stars">★★★★★</div>
+          <p class="quote-text">"Not broken — just had an attachment style I never learned about. Daily affirmations
+            help so much."</p>
+          <cite class="quote-author">— Jessica K.</cite>
+        </blockquote>
+      </div>
+    </section>
+
+    <section class="cta-block reveal" id="download">
+      <h2>Start your growth journey today</h2>
+      <p>Join thousands building healthier connections.</p>
+      <a class="btn btn-primary" href="https://apps.apple.com/app/id6757321882" target="_blank" rel="noopener"
+        style="margin-bottom: 28px;">Download on App Store</a>
+      <br />
+      <a class="qr-row" href="https://apps.apple.com/app/id6757321882" target="_blank" rel="noopener">
+        <div id="bound-qr" aria-hidden="true"></div>
+        <div class="qr-copy">
+          <small>Quick install</small>
+          <strong>Scan to download Bound</strong>
+        </div>
+      </a>
+    </section>
+
+    <footer id="contact">
+      <div>
+        <img class="logo" src="img/logo.png" alt="Bound" style="height: 32px; margin-bottom: 12px;" />
+        <p class="footer-copy">© 2026 Nexify Labs LLC</p>
+      </div>
+      <div class="footer-links">
+        <a href="mailto:myboundapp@gmail.com">myboundapp@gmail.com</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+      </div>
+    </footer>
+  </div>
+
+  <script src="https://unpkg.com/qr-code-styling@1.9.2/lib/qr-code-styling.js"></script>
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll(".reveal");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("visible"); });
+    }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+    reveals.forEach((el) => observer.observe(el));
+    reveals.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight) el.classList.add("visible");
+    });
+
+    // Nav scroll
+    const nav = document.getElementById("nav");
+    window.addEventListener("scroll", () => nav.classList.toggle("scrolled", scrollY > 40));
+
+    // Mobile nav
+    document.getElementById("navToggle")?.addEventListener("click", () => {
+      document.getElementById("navLinks")?.classList.toggle("open");
+    });
+
+    // Bento hover glow
+    document.querySelectorAll(".bento-card").forEach((card) => {
+      card.addEventListener("mousemove", (e) => {
+        const r = card.getBoundingClientRect();
+        card.style.setProperty("--mx", ((e.clientX - r.left) / r.width * 100) + "%");
+        card.style.setProperty("--my", ((e.clientY - r.top) / r.height * 100) + "%");
+      });
+    });
+
+    // Counter animation
+    const counters = document.querySelectorAll("[data-count]");
+    const countObs = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        const el = e.target;
+        const target = parseFloat(el.dataset.count);
+        const isDecimal = target % 1 !== 0;
+        const duration = 1400;
+        const start = performance.now();
+        const tick = (now) => {
+          const p = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          const val = target * eased;
+          el.textContent = isDecimal ? val.toFixed(1) : Math.floor(val) + (target >= 10 ? "K+" : "");
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+        countObs.unobserve(el);
+      });
+    }, { threshold: 0.5 });
+    counters.forEach((c) => countObs.observe(c));
+
+    // QR
+    const qrMount = document.getElementById("bound-qr");
+    if (qrMount && typeof QRCodeStyling !== "undefined") {
+      new QRCodeStyling({
+        width: 200, height: 200, type: "svg",
+        data: "https://apps.apple.com/app/id6757321882",
+        qrOptions: { errorCorrectionLevel: "Q" },
+        dotsOptions: {
+          type: "rounded",
+          gradient: { type: "linear", rotation: 1.2, colorStops: [{ offset: 0, color: "#7b5cff" }, { offset: 1, color: "#2f2ad8" }] }
+        },
+        cornersSquareOptions: { type: "extra-rounded", color: "#5b3fff" },
+        cornersDotOptions: { color: "#7b5cff" },
+        backgroundOptions: { color: "#ffffff" }
+      }).append(qrMount);
+    }
+  </script>
+</body>
+
 </html>
