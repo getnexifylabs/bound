@@ -142,8 +142,9 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
-      padding: 12px 18px;
+      gap: 12px;
+      padding: 10px 14px 10px 18px;
+      min-height: 56px;
       border: 1px solid var(--line);
       border-radius: 999px;
       background: rgba(12, 6, 52, 0.65);
@@ -158,9 +159,19 @@
       border-color: rgba(198, 184, 255, 0.28);
     }
 
+    .logo-link {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+      padding: 4px 0;
+      line-height: 0;
+    }
+
     .logo {
-      height: 36px;
+      height: 28px;
       width: auto;
+      max-width: 110px;
+      object-fit: contain;
       display: block;
     }
 
@@ -180,6 +191,11 @@
 
     .nav-links a:hover {
       color: var(--text);
+    }
+
+    .nav-links a.btn-primary,
+    .nav-links a.btn-primary:hover {
+      color: #1a0a5c;
     }
 
     .btn {
@@ -209,6 +225,17 @@
 
     .btn-primary:hover {
       box-shadow: 0 16px 48px rgba(255, 216, 94, 0.45);
+    }
+
+    .nav .btn-primary {
+      white-space: nowrap;
+      flex-shrink: 0;
+      padding: 12px 20px;
+      font-size: 0.88rem;
+    }
+
+    .nav-cta-mobile {
+      display: none;
     }
 
     .btn-ghost {
@@ -838,6 +865,20 @@
     }
 
     @media (max-width: 768px) {
+      .nav-inner {
+        padding: 10px 14px 10px 16px;
+        min-height: 52px;
+      }
+
+      .logo {
+        height: 24px;
+        max-width: 96px;
+      }
+
+      .nav .btn-primary {
+        display: none;
+      }
+
       .nav-links {
         display: none;
       }
@@ -847,12 +888,21 @@
         flex-direction: column;
         position: absolute;
         top: calc(100% + 8px);
-        left: 24px;
-        right: 24px;
-        padding: 20px;
+        left: 16px;
+        right: 16px;
+        padding: 16px;
         border-radius: 20px;
         background: rgba(8, 4, 36, 0.95);
         border: 1px solid var(--line);
+        gap: 12px;
+        z-index: 200;
+      }
+
+      .nav-links.open .nav-cta-mobile {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        margin-top: 8px;
       }
 
       .nav {
@@ -860,7 +910,10 @@
       }
 
       .nav-toggle {
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
       }
 
       section {
@@ -898,12 +951,14 @@
   <div class="wrap">
     <header class="nav" id="nav">
       <div class="nav-inner">
-        <a href="/"><img class="logo" src="img/logo.png" alt="Bound" /></a>
+        <a href="/" class="logo-link"><img class="logo" src="img/logo.png" alt="Bound" /></a>
         <nav class="nav-links" id="navLinks">
           <a href="#features">Features</a>
           <a href="#how">How it works</a>
           <a href="#reviews">Reviews</a>
           <a href="#contact">Contact</a>
+          <a class="btn btn-primary nav-cta-mobile" href="https://apps.apple.com/app/id6757321882" target="_blank"
+            rel="noopener">Get the app</a>
         </nav>
         <a class="btn btn-primary" href="https://apps.apple.com/app/id6757321882" target="_blank" rel="noopener">Get the
           app</a>
@@ -956,9 +1011,9 @@
 
   <div class="wrap">
     <div class="stats reveal">
-      <div class="stat-card"><span class="stat-num" data-count="15">0</span><span class="stat-label">K+ active
-          users</span></div>
-      <div class="stat-card"><span class="stat-num" data-count="4.8">0</span><span class="stat-label">App Store
+      <div class="stat-card"><span class="stat-num">7-day</span><span class="stat-label">Guided start program</span>
+      </div>
+      <div class="stat-card"><span class="stat-num" data-count="4.9">0</span><span class="stat-label">App Store
           rating</span></div>
       <div class="stat-card"><span class="stat-num">24/7</span><span class="stat-label">Support when you need it</span>
       </div>
@@ -1041,7 +1096,7 @@
         </blockquote>
         <blockquote class="quote-card reveal reveal-delay-2">
           <div class="quote-stars">★★★★★</div>
-          <p class="quote-text">"Not broken — just had an attachment style I never learned about. Daily affirmations
+          <p class="quote-text">"I just had an attachment style I never learned about. Daily affirmations
             help so much."</p>
           <cite class="quote-author">— Jessica K.</cite>
         </blockquote>
@@ -1065,7 +1120,8 @@
 
     <footer id="contact">
       <div>
-        <img class="logo" src="img/logo.png" alt="Bound" style="height: 32px; margin-bottom: 12px;" />
+        <a href="/" class="logo-link"><img class="logo" src="img/logo.png" alt="Bound"
+            style="height: 28px; margin-bottom: 12px;" /></a>
         <p class="footer-copy">© 2026 Nexify Labs LLC</p>
       </div>
       <div class="footer-links">
